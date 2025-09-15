@@ -91,13 +91,15 @@
         </header>
 
         <main id="auth-view" class="view active min-h-screen">
-            <div class="flex flex-col md:flex-row w-full h-full min-h-screen">
-                <div class="hidden md:flex flex-1 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center p-12 text-white flex-col gap-6 text-center">
-                    <i class="fas fa-clipboard-check text-7xl mb-4"></i>
-                    <h1 class="text-5xl font-extrabold leading-tight">Welcome to AttendWise</h1>
-                    <p class="text-xl text-blue-200 max-w-md">Your smart, simple, and streamlined solution for tracking attendance effortlessly.</p>
+            <div class="flex flex-col-reverse md:flex-row w-full h-full min-h-screen">
+                <!-- MODIFICATION: Welcome message now visible on mobile, positioned at bottom -->
+                <div class="flex md:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center p-8 md:p-12 text-white flex-col gap-4 md:gap-6 text-center">
+                    <i class="fas fa-clipboard-check text-6xl md:text-7xl mb-2 md:mb-4"></i>
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Welcome to AttendWise</h1>
+                    <p class="text-lg md:text-xl text-blue-200 max-w-md">Your smart, simple, and streamlined solution for tracking attendance effortlessly.</p>
                 </div>
-                <div class="w-full md:w-1/2 flex items-center justify-center bg-gray-100 p-6">
+                <!-- MODIFICATION: Login form now at top on mobile and expands to fill space -->
+                <div class="w-full md:w-1/2 flex flex-grow md:flex-grow-0 items-center justify-center bg-gray-100 p-6">
                     <div class="w-full max-w-md">
                         <div id="login-form-container" class="auth-card">
                             <h2 class="text-4xl font-bold text-center mb-2">Sign In</h2>
@@ -266,16 +268,16 @@
     <!-- Modals -->
     <div id="modal-container">
          <div id="add-subject-modal" class="modal-backdrop fixed inset-0 flex items-center justify-center p-4 z-40 hidden">
-             <div class="modal-content card w-full max-w-md">
-                 <h3 class="text-2xl font-bold mb-6">Add New Subject</h3>
-                 <form id="add-subject-form" class="space-y-4">
-                     <div><label for="subject-name" class="block text-sm font-medium text-gray-600 mb-1">Subject Name</label><input type="text" id="subject-name" class="input-field" required></div>
-                     <div><label for="teacher-name-1" class="block text-sm font-medium text-gray-600 mb-1">Teacher Name</label><input type="text" id="teacher-name-1" class="input-field" required></div>
-                     <div class="flex items-center"><input type="checkbox" id="add-second-teacher" class="h-4 w-4 rounded mr-2"><label for="add-second-teacher" class="text-sm text-gray-600">This subject has a second teacher</label></div>
-                      <div id="second-teacher-field" class="hidden"><label for="teacher-name-2" class="block text-sm font-medium text-gray-600 mb-1">Second Teacher Name</label><input type="text" id="teacher-name-2" class="input-field"></div>
-                     <div class="flex justify-end gap-4 pt-4"><button type="button" class="btn-secondary" data-close-modal>Cancel</button><button type="submit" class="btn-primary">Save Subject</button></div>
-                 </form>
-             </div>
+              <div class="modal-content card w-full max-w-md">
+                   <h3 class="text-2xl font-bold mb-6">Add New Subject</h3>
+                   <form id="add-subject-form" class="space-y-4">
+                        <div><label for="subject-name" class="block text-sm font-medium text-gray-600 mb-1">Subject Name</label><input type="text" id="subject-name" class="input-field" required></div>
+                        <div><label for="teacher-name-1" class="block text-sm font-medium text-gray-600 mb-1">Teacher Name</label><input type="text" id="teacher-name-1" class="input-field" required></div>
+                        <div class="flex items-center"><input type="checkbox" id="add-second-teacher" class="h-4 w-4 rounded mr-2"><label for="add-second-teacher" class="text-sm text-gray-600">This subject has a second teacher</label></div>
+                         <div id="second-teacher-field" class="hidden"><label for="teacher-name-2" class="block text-sm font-medium text-gray-600 mb-1">Second Teacher Name</label><input type="text" id="teacher-name-2" class="input-field"></div>
+                        <div class="flex justify-end gap-4 pt-4"><button type="button" class="btn-secondary" data-close-modal>Cancel</button><button type="submit" class="btn-primary">Save Subject</button></div>
+                   </form>
+              </div>
         </div>
         <div id="mark-attendance-modal" class="modal-backdrop fixed inset-0 flex items-center justify-center p-4 z-40 hidden">
             <div class="modal-content card w-full max-w-md">
@@ -404,11 +406,17 @@
                 const userEl = document.createElement('div');
                 userEl.className = 'p-4 bg-gray-50 rounded-lg flex justify-between items-center cursor-pointer hover:bg-blue-50 transition-colors';
                 userEl.innerHTML = `<div><p class="font-bold">${user.name}</p><p class="text-sm text-gray-500">${user.email}</p></div><i class="fas fa-chevron-right text-gray-400"></i>`;
+                
+                // MODIFICATION: Disabled admin drill-down to protect user privacy.
                 userEl.addEventListener('click', () => {
+                    showToast("Drill-down disabled to protect user privacy.", false);
+                    // To re-enable this feature, uncomment the block below.
+                    /*
                     viewedUser = { id: user.id, name: user.name };
                     currentSemester = user.currentSemester || '1';
                     document.getElementById('dashboard-greeting').textContent = `Viewing ${user.name.split(' ')[0]}'s Dashboard`;
                     loadDashboard(user.id, true);
+                    */
                 });
                 userListEl.appendChild(userEl);
             });
